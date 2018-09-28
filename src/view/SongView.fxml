@@ -27,9 +27,9 @@
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <Button layoutX="41.0" layoutY="26.0" mnemonicParsing="false" text="Add" />
-            <Button layoutX="41.0" layoutY="172.0" mnemonicParsing="false" text="Delete" />
-            <Button layoutX="41.0" layoutY="320.0" mnemonicParsing="false" text="Edit" />
+            <Button fx:id = "add" layoutX="41.0" layoutY="26.0" mnemonicParsing="false" text="Add" />
+            <Button fx:id = "delete" layoutX="41.0" layoutY="172.0" mnemonicParsing="false" text="Delete" />
+            <Button fx:id = "edit" layoutX="41.0" layoutY="320.0" mnemonicParsing="false" text="Edit" />
          </children></AnchorPane>
   </items>
 </SplitPane>
