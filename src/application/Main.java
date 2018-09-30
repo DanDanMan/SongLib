@@ -18,9 +18,11 @@ public class Main extends Application {
 		//FXMLLoader loader = new FXMLLoader();
 		//loader.setLocation(getClass().getResource("/f2c/view/F2C.fxml"));
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/SongLib/src/view/SongView.fxml"));
+		loader.setLocation(getClass().getResource("/view/SongView.fxml"));
 		
-		AnchorPane root = (AnchorPane)loader.load();
+		//AnchorPane root = (AnchorPane)loader.load();
+		SplitPane root = (SplitPane)loader.load();
+
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("SongView");
