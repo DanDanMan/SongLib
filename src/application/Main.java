@@ -1,6 +1,7 @@
 package application;
 	
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -17,6 +18,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws IOException{
 		//FXMLLoader loader = new FXMLLoader();
 		//loader.setLocation(getClass().getResource("/f2c/view/F2C.fxml"));
+		
+		PrintWriter writer = new PrintWriter("songs.txt", "UTF-8");
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/view/SongView.fxml"));
 		

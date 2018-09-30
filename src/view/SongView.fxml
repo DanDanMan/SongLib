@@ -33,16 +33,16 @@
             <Button fx:id="add" layoutX="41.0" layoutY="26.0" mnemonicParsing="false" onAction="#buttons" text="Add" />
             <Button fx:id="delete" layoutX="33.0" layoutY="71.0" mnemonicParsing="false" onAction="#buttons" text="Delete" />
             <Button fx:id="edit" layoutX="41.0" layoutY="120.0" mnemonicParsing="false" onAction="#buttons" text="Edit" />
-            <TextField layoutX="1.0" layoutY="181.0" prefHeight="60.0" prefWidth="168.0" />
-            <TextField layoutX="2.0" layoutY="266.0" prefHeight="27.0" prefWidth="162.0" />
-            <TextField layoutY="317.0" />
-            <TextField layoutX="3.0" layoutY="364.0" />
+            <TextField fx:id="songText" layoutX="1.0" layoutY="181.0" prefHeight="60.0" prefWidth="168.0" disable="true" />
+            <TextField fx:id="artistText" layoutX="2.0" layoutY="266.0" prefHeight="27.0" prefWidth="162.0" disable="true" />
+            <TextField fx:id="albumText" layoutY="317.0" disable="true"/>
+            <TextField fx:id="yearText" layoutX="3.0" layoutY="364.0" disable="true" />
             <Label layoutX="8.0" layoutY="166.0" text="Song Name" />
             <Label layoutX="6.0" layoutY="240.0" text="Artist Name" />
             <Label layoutX="13.0" layoutY="292.0" text="Album" />
             <Label layoutX="16.0" layoutY="343.0" text="Year" />
-            <Button fx:id="done" layoutX="8.0" layoutY="412.0" mnemonicParsing="false" text="Done" />
-            <Button fx:id="cancel" layoutX="96.0" layoutY="412.0" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="done" layoutX="8.0" layoutY="412.0" mnemonicParsing="false" text="Done" onAction="#buttons" />
+            <Button fx:id="cancel" layoutX="96.0" layoutY="412.0" mnemonicParsing="false" text="Cancel" onAction="#buttons" />
          </children></AnchorPane>
   </items>
 </SplitPane>
