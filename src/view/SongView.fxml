@@ -2,19 +2,18 @@
 
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<SplitPane dividerPositions="0.7591973244147158" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" 
-xmlns="http://javafx.com/javafx/10.0.1" 
-xmlns:fx="http://javafx.com/fxml/1"
-fx:controller="view.SongViewController">
+<SplitPane dividerPositions="0.7591973244147158" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="445.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SongViewController">
 
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <Accordion fx:id = "ac" layoutX="-2.0" layoutY="-3.0" prefHeight="398.0" prefWidth="456.0">
+            <Accordion fx:id="ac" layoutX="-2.0" layoutY="-3.0" prefHeight="398.0" prefWidth="456.0">
               <panes>
                 <TitledPane animated="false" text="Test 1">
                   <content>
@@ -31,9 +30,19 @@ fx:controller="view.SongViewController">
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <Button fx:id = "add" onAction = "#buttons" layoutX="41.0" layoutY="26.0" mnemonicParsing="false" text="Add" />
-            <Button fx:id = "delete" onAction = "#buttons" layoutX="41.0" layoutY="172.0" mnemonicParsing="false" text="Delete" />
-            <Button fx:id = "edit" onAction = "#buttons" layoutX="41.0" layoutY="320.0" mnemonicParsing="false" text="Edit" />
+            <Button fx:id="add" layoutX="41.0" layoutY="26.0" mnemonicParsing="false" onAction="#buttons" text="Add" />
+            <Button fx:id="delete" layoutX="33.0" layoutY="71.0" mnemonicParsing="false" onAction="#buttons" text="Delete" />
+            <Button fx:id="edit" layoutX="41.0" layoutY="120.0" mnemonicParsing="false" onAction="#buttons" text="Edit" />
+            <TextField layoutX="1.0" layoutY="181.0" prefHeight="60.0" prefWidth="168.0" />
+            <TextField layoutX="2.0" layoutY="266.0" prefHeight="27.0" prefWidth="162.0" />
+            <TextField layoutY="317.0" />
+            <TextField layoutX="3.0" layoutY="364.0" />
+            <Label layoutX="8.0" layoutY="166.0" text="Song Name" />
+            <Label layoutX="6.0" layoutY="240.0" text="Artist Name" />
+            <Label layoutX="13.0" layoutY="292.0" text="Album" />
+            <Label layoutX="16.0" layoutY="343.0" text="Year" />
+            <Button fx:id="done" layoutX="8.0" layoutY="412.0" mnemonicParsing="false" text="Done" />
+            <Button fx:id="cancel" layoutX="96.0" layoutY="412.0" mnemonicParsing="false" text="Cancel" />
          </children></AnchorPane>
   </items>
 </SplitPane>
