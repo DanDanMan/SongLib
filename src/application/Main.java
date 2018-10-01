@@ -19,7 +19,7 @@ public class Main extends Application {
 		//FXMLLoader loader = new FXMLLoader();
 		//loader.setLocation(getClass().getResource("/f2c/view/F2C.fxml"));
 		
-		PrintWriter writer = new PrintWriter("songs.txt", "UTF-8");
+		//PrintWriter writer = new PrintWriter("songs.txt", "UTF-8");
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/view/SongView.fxml"));
 		

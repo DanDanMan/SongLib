@@ -1,10 +1,12 @@
 package view;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
@@ -59,8 +61,12 @@ public class SongViewController {
 			
 			//Writing the song to the text file(in alphabetical order?)
 			try {
-				FileWriter fw = new FileWriter(fileName,true);
-				fw.write(songName+" "+artistName+" "+albumName+" "+year+"\r\n");
+				//FileWriter fw = new FileWriter(fileName,true);
+				FileWriter fw = new FileWriter("SongList.txt",true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				//System.out.println(songName);
+				//bw.write("test");
+				fw.write(songName+"/"+artistName+"/"+albumName+"/"+year+"\r\n");
 				fw.close();
 			}catch(FileNotFoundException ex){
 				System.out.println("No file exists");
@@ -69,15 +75,20 @@ public class SongViewController {
 			}
 			
 			
+			
 			//Adding the song to the UI
 			GridPane grid = new GridPane();
-			grid.addRow(0, new Label("Album"));
+			grid.addRow(0, new Label("* Album *"));
 			grid.addRow(1, new Label(albumName));
-			grid.addRow(2, new Label("Year"));
+			grid.addRow(2, new Label("* Year *"));
 			grid.addRow(3, new Label(year));
-			TitledPane tp = new TitledPane("Song: "+songName+" Album:"+albumName, grid);
+			TitledPane tp = new TitledPane("Song: "+songName+" Artist: "+artistName, grid);
 	        ac.getPanes().add(tp);
 	        
+	        
+	        ObservableList<TitledPane> titledPanes = ac.getPanes().sorted();
+			System.out.println(titledPanes);
+			titledPanes.sort(null);
 	        
 	        //reset fields
 	        songText.setDisable(true);
@@ -89,6 +100,30 @@ public class SongViewController {
 			artistText.setText("");
 			albumText.setText("");
 			yearText.setText("");
+		}
+		
+		
+		if (b == cancel) {
+			songText.setDisable(true);
+			artistText.setDisable(true);
+			albumText.setDisable(true);
+			yearText.setDisable(true);
+			
+			songText.setText("");
+			artistText.setText("");
+			albumText.setText("");
+			yearText.setText("");
+		}
+		
+		if (b == edit) {
+			songText.setDisable(false);
+			artistText.setDisable(false);
+			albumText.setDisable(false);
+			yearText.setDisable(false);
+			
+			
+			//need to set all the text boxes with values of the selected titled pane 
+			
 		}
 		
 		
