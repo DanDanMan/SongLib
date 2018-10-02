@@ -85,7 +85,7 @@ public class SongViewController {
 				grid.addRow(1, new Label(albumName));
 				grid.addRow(2, new Label("* Year *"));
 				grid.addRow(3, new Label(year));
-				TitledPane tp = new TitledPane("Song: "+songName+" Artist: "+artistName, grid);
+				TitledPane tp = new TitledPane("Song:"+songName+" Artist:"+artistName, grid);
 				//tp.isExpanded()
 			
 				if(ac.getPanes().size() == 0) {
@@ -105,7 +105,7 @@ public class SongViewController {
 				grid.addRow(1, new Label(albumName));
 				grid.addRow(2, new Label("* Year *"));
 				grid.addRow(3, new Label(year));
-				TitledPane tp = new TitledPane("Song: "+songName+" Artist: "+artistName, grid);
+				TitledPane tp = new TitledPane("Song:"+songName+" Artist:"+artistName, grid);
 				
 				//ac.getPanes().add(tp);
 
@@ -312,11 +312,13 @@ public class SongViewController {
 					
 					//belongs at the end of the list
 					if(i == size) {
+						System.out.println("insert4");
 						tps.add(toAdd);
 						return;
 					}
 					
-					//case where you break out the loop 
+					//case where you break out the loop
+					System.out.println("insert5");
 					tps.add(i,toAdd);
 					return;
 				}
@@ -331,6 +333,7 @@ public class SongViewController {
 	}
 	
 	public void insert(ObservableList<TitledPane> tps, TitledPane toAdd, String sn1, String sn2, String an1, String an2) {
+		System.out.println(sn1 +" "+ sn2 + " " + an1 + " " + an2);
 		if(sn1.compareTo(sn2) < 0) {
 			//songName1 comes first
 			tps.add(toAdd);
@@ -339,6 +342,7 @@ public class SongViewController {
 			tps.add(0,toAdd);
 		}else {
 			//same name so compare artists
+			System.out.println("same artist Name");
 			if(an1.compareTo(an2) < 0) {
 				//artistName1 comes first
 				tps.add(toAdd);
