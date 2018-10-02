@@ -88,8 +88,12 @@ public class SongViewController {
 				TitledPane tp = new TitledPane("Song: "+songName+" Artist: "+artistName, grid);
 				//tp.isExpanded()
 			
-			
-				ac.getPanes().add(tp);
+				if(ac.getPanes().size() == 0) {
+					ac.getPanes().add(tp);
+				}else {
+					ObservableList<TitledPane> titledPanes = ac.getPanes();
+					insertSong(titledPanes, tp);
+				}
 			}
 			
 			if (editBool == true) {
@@ -103,17 +107,20 @@ public class SongViewController {
 				grid.addRow(3, new Label(year));
 				TitledPane tp = new TitledPane("Song: "+songName+" Artist: "+artistName, grid);
 				
-				ac.getPanes().add(tp);
+				//ac.getPanes().add(tp);
 
 				//LEFT OFF HERE
 		        for (int i = 0; i < titledPanes.size(); i++) {
 		        	if (titledPanes.get(i).isExpanded() == true){
-		        		//selected = titledPanes.get(i);
-		        		//titledPanes.remove(i);
-		        		//titledPanes.re
 		        		ac.getPanes().remove(i);
 		        	}
 		        }
+		        
+		        if(ac.getPanes().size() == 0) {
+					ac.getPanes().add(tp);
+				}else {
+					insertSong(titledPanes, tp);
+				}
 		        
 				//tp.isExpanded()
 			
@@ -121,12 +128,7 @@ public class SongViewController {
 		        
 			}
 	        
-	        ObservableList<TitledPane> titledPanes = ac.getPanes().sorted();
-			//System.out.println(titledPanes);
-			//titledPanes.sort(null);
-	        for (int i = 0; i < titledPanes.size(); i++) {
-	        	
-	        }
+	       
 	        
 	        //reset fields
 	        songText.setDisable(true);
@@ -154,6 +156,9 @@ public class SongViewController {
 			artistText.setText("");
 			albumText.setText("");
 			yearText.setText("");
+			
+			addBool = false;
+			editBool = false;
 		}
 		
 		if (b == edit) {
@@ -235,6 +240,114 @@ public class SongViewController {
 		}
 		
 		
+	}
+	
+	public void insertSong(ObservableList<TitledPane> tps, TitledPane toAdd) {
+		//sort by song name, then by artist
+		int size = tps.size();
+		String songName1 = "";
+		String artistName1 = "";
+		String songArtist1 = "";
+		
+		//get the song and artist name of song we are adding
+		String songArtist2 = toAdd.getText();
+		String arr3[] = songArtist2.split(":");
+		String arr4[] = arr3[1].split(" Artist");
+		String songName2 = arr4[0];
+		String artistName2 = arr3[2];
+		
+		
+		
+		
+		if(size == 1) {
+		//the case where we add the second song
+		songArtist1 = tps.get(0).getText();
+		String arr[] = songArtist1.split(":");
+		String arr2[] = arr[1].split(" Artist");
+		songName1 = arr2[0];
+		artistName1 = arr[2];
+		
+		System.out.println("insert1");
+		insert(tps, toAdd, songName1, songName2, artistName1, artistName2);
+		
+		}else {
+			//need to go through list and find right index to insert
+			for(int i = 0; i < size; i++) {
+				songArtist1 = tps.get(i).getText();
+				String arr5[] = songArtist1.split(":");
+				String arr6[] = arr5[1].split(" Artist");
+				songName1 = arr6[0];
+				artistName1 = arr5[2];
+				
+				if(songName1.compareTo(songName2) > 0) {
+					//songName2 comes first
+					System.out.println("insert2");
+					tps.add(i,toAdd);
+					return;
+				}else if(songName1.compareTo(songName2) == 0) {
+					//same name so compare artists. loop through songs with the same
+					while(i < size && songName1.compareTo(songName2) == 0) {
+						
+						//getting song and artist
+						songArtist1 = tps.get(i).getText();
+						String arr7[] = songArtist1.split(":");
+						String arr8[] = arr7[1].split(" Artist");
+						songName1 = arr8[0];
+						artistName1 = arr7[2];
+						
+						//if they are not the same song name break out, so song belongs at the end of the list with the same name
+						if(songName1.compareTo(songName2) != 0) {
+							break;
+						}
+						//System.out.println(songName1+ songName2 + songName1.compareTo(songName2));
+						
+						//found a spot where new song comes before and old song
+						if(artistName1.compareTo(artistName2) > 0) {
+							System.out.println("insert3");
+							tps.add(i, toAdd);
+							return;
+						}
+						i++;
+					}
+					
+					//belongs at the end of the list
+					if(i == size) {
+						tps.add(toAdd);
+						return;
+					}
+					
+					//case where you break out the loop 
+					tps.add(i,toAdd);
+					return;
+				}
+				
+				//if you get to this point then the song has not been added
+				
+			}
+			tps.add(toAdd);
+			return;
+		}
+		
+	}
+	
+	public void insert(ObservableList<TitledPane> tps, TitledPane toAdd, String sn1, String sn2, String an1, String an2) {
+		if(sn1.compareTo(sn2) < 0) {
+			//songName1 comes first
+			tps.add(toAdd);
+		}else if(sn1.compareTo(sn2) > 0) {
+			//songName 2 comes first
+			tps.add(0,toAdd);
+		}else {
+			//same name so compare artists
+			if(an1.compareTo(an2) < 0) {
+				//artistName1 comes first
+				tps.add(toAdd);
+			}else {
+				//artistname2 comes first
+				tps.add(0,toAdd);
+			}
+			
+		}
 	}
 	
 	
