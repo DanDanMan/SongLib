@@ -9,6 +9,7 @@ import java.io.IOException;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,6 +23,7 @@ public class SongViewController {
 	@FXML Accordion ac;
 	@FXML TextField songText, artistText, albumText, yearText;
 	
+	boolean addBool = false, editBool = false;
 	
 	public void buttons(ActionEvent e) {
 		Button b = (Button)e.getSource();
@@ -32,6 +34,7 @@ public class SongViewController {
 			artistText.setDisable(false);
 			albumText.setDisable(false);
 			yearText.setDisable(false);
+			addBool = true;
 		}
 		
 		
@@ -75,20 +78,55 @@ public class SongViewController {
 			}
 			
 			
+			if (addBool == true) {
+				//Adding the song to the UI
+				GridPane grid = new GridPane();
+				grid.addRow(0, new Label("* Album *"));
+				grid.addRow(1, new Label(albumName));
+				grid.addRow(2, new Label("* Year *"));
+				grid.addRow(3, new Label(year));
+				TitledPane tp = new TitledPane("Song: "+songName+" Artist: "+artistName, grid);
+				//tp.isExpanded()
 			
-			//Adding the song to the UI
-			GridPane grid = new GridPane();
-			grid.addRow(0, new Label("* Album *"));
-			grid.addRow(1, new Label(albumName));
-			grid.addRow(2, new Label("* Year *"));
-			grid.addRow(3, new Label(year));
-			TitledPane tp = new TitledPane("Song: "+songName+" Artist: "+artistName, grid);
-	        ac.getPanes().add(tp);
-	        
+			
+				ac.getPanes().add(tp);
+			}
+			
+			if (editBool == true) {
+				ObservableList<TitledPane> titledPanes = ac.getPanes();
+		        TitledPane selected = new TitledPane();
+		        
+		        GridPane grid = new GridPane();
+				grid.addRow(0, new Label("* Album *"));
+				grid.addRow(1, new Label(albumName));
+				grid.addRow(2, new Label("* Year *"));
+				grid.addRow(3, new Label(year));
+				TitledPane tp = new TitledPane("Song: "+songName+" Artist: "+artistName, grid);
+				
+				ac.getPanes().add(tp);
+
+				//LEFT OFF HERE
+		        for (int i = 0; i < titledPanes.size(); i++) {
+		        	if (titledPanes.get(i).isExpanded() == true){
+		        		//selected = titledPanes.get(i);
+		        		//titledPanes.remove(i);
+		        		//titledPanes.re
+		        		ac.getPanes().remove(i);
+		        	}
+		        }
+		        
+				//tp.isExpanded()
+			
+			
+		        
+			}
 	        
 	        ObservableList<TitledPane> titledPanes = ac.getPanes().sorted();
-			System.out.println(titledPanes);
-			titledPanes.sort(null);
+			//System.out.println(titledPanes);
+			//titledPanes.sort(null);
+	        for (int i = 0; i < titledPanes.size(); i++) {
+	        	
+	        }
 	        
 	        //reset fields
 	        songText.setDisable(true);
@@ -100,6 +138,9 @@ public class SongViewController {
 			artistText.setText("");
 			albumText.setText("");
 			yearText.setText("");
+			
+			addBool = false;
+			editBool = false;
 		}
 		
 		
@@ -116,6 +157,7 @@ public class SongViewController {
 		}
 		
 		if (b == edit) {
+			editBool = true;
 			songText.setDisable(false);
 			artistText.setDisable(false);
 			albumText.setDisable(false);
@@ -123,7 +165,73 @@ public class SongViewController {
 			
 			
 			//need to set all the text boxes with values of the selected titled pane 
-			
+	        ObservableList<TitledPane> titledPanes = ac.getPanes(); //was .sorted
+	        TitledPane selected = new TitledPane();
+	        for (int i = 0; i < titledPanes.size(); i++) {
+	        	if (titledPanes.get(i).isExpanded() == true){
+	        		selected = titledPanes.get(i);
+	        	}
+	        	
+	        	//set it if rest of titledpanes isn't expanded, they cant be expanded 
+	        	if (titledPanes.get(i).isExpanded() == false) {
+	        		//titledPanes.get(i).setCollapsible(false);
+	        	}
+	        }
+	        
+	        
+	        /*System.out.println("Selected:");
+	        System.out.println(selected);
+	        */
+	       
+	        String txt = selected.getText();
+	        //System.out.println(txt);
+	        //songText.setText(selected.getT);
+	        String txtarr[] = txt.split(":");
+			String arr2[] = txtarr[1].split(" Artist");
+			String songTxt = arr2[0];
+			String artistTxt = txtarr[2];
+	        
+			//System.out.println("songTxt: " + songTxt);
+			//System.out.println("artistTxt: " + artistTxt);
+
+	        GridPane gri = (GridPane) selected.getContent(); //getContent
+	        
+	        /*System.out.println("gri \n" + gri);
+	        System.out.println(gri.getChildren());
+	        */
+	        Node albumNode = null, yearNode = null;
+	        ObservableList<Node> children = gri.getChildren();
+	        for (Node node : children) {
+	        	if (GridPane.getRowIndex(node) == 1) {
+	        		albumNode = node;
+	        	}
+	        	
+	        	if (GridPane.getRowIndex(node) == 3) {
+	        		yearNode = node;
+	        	}
+	        }
+	        
+	        /*System.out.println("albumNode: " + albumNode);
+	        System.out.println("yearNode: " + yearNode);
+	        //System.out.println(gri.getRowI);
+	        */
+	        String albumNodeTxt = albumNode.toString();
+	        String arr [] = albumNodeTxt.split("]'");
+	       // System.out.println(arr[1]);
+	        String albumTxt = arr[1].substring(0, arr[1].length() - 1);
+	        
+	        
+	        String yearNodeTxt = yearNode.toString();
+	        String yearArr[] = yearNodeTxt.split("]'");
+	        String yearTxt = yearArr[1].substring(0, yearArr[1].length() - 1);
+	        //System.out.println("album txt: " + albumTxt);
+	        //System.out.println("year txt: " + yearTxt);
+	        
+	        songText.setText(songTxt);
+			artistText.setText(artistTxt);
+			albumText.setText(albumTxt);
+			yearText.setText(yearTxt);
+
 		}
 		
 		
