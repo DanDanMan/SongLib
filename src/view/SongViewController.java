@@ -23,8 +23,10 @@ import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 public class SongViewController {
@@ -32,6 +34,7 @@ public class SongViewController {
 	@FXML Button add, edit, delete, done, cancel;
 	@FXML Accordion ac;
 	@FXML TextField songText, artistText, albumText, yearText;
+	@FXML AnchorPane ap;
 	
 	boolean addBool = false, editBool = false;
 	
@@ -109,6 +112,7 @@ public class SongViewController {
 			}
 			
 			if (editBool == true) {
+				
 				ObservableList<TitledPane> titledPanes = ac.getPanes();
 		        TitledPane selected = new TitledPane();
 		        
@@ -204,6 +208,11 @@ public class SongViewController {
 			artistText.setDisable(true);
 			albumText.setDisable(true);
 			yearText.setDisable(true);
+		
+			ac.setDisable(false);
+			add.setDisable(false);
+			delete.setDisable(false);
+			edit.setDisable(false);
 			
 			songText.setText("");
 			artistText.setText("");
@@ -221,6 +230,11 @@ public class SongViewController {
 			albumText.setDisable(true);
 			yearText.setDisable(true);
 			
+			ac.setDisable(false);
+			add.setDisable(false);
+			delete.setDisable(false);
+			edit.setDisable(false);
+			
 			songText.setText("");
 			artistText.setText("");
 			albumText.setText("");
@@ -232,6 +246,10 @@ public class SongViewController {
 		
 		if (b == edit) {
 			editBool = true;
+			ac.setDisable(true);
+			add.setDisable(true);
+			delete.setDisable(true);
+			edit.setDisable(true);
 			songText.setDisable(false);
 			artistText.setDisable(false);
 			albumText.setDisable(false);
@@ -305,6 +323,8 @@ public class SongViewController {
 			artistText.setText(artistTxt);
 			albumText.setText(albumTxt);
 			yearText.setText(yearTxt);
+			
+			
 
 		}
 		
@@ -547,11 +567,7 @@ public class SongViewController {
 					String album = delminated[2];
 					String year = delminated[3];
 					
-					/*System.out.println("Song\n" + song);
-					System.out.println("artist\n" + artist);
-					System.out.println("album\n" + album);
-					System.out.println("year\n" + year);
-					*/
+					
 					
 					GridPane grid = new GridPane();
 					grid.addRow(0, new Label("* Album *"));
@@ -577,5 +593,6 @@ public class SongViewController {
 			}
 			
 		}
-
+		
+		
 }
