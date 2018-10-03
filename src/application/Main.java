@@ -29,7 +29,7 @@ public class Main extends Application {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("SongView");
-		primaryStage.setResizable(true);  
+		primaryStage.setResizable(false);  
 		primaryStage.show();
 		
 		

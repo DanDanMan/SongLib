@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
@@ -21,7 +22,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
@@ -59,6 +63,7 @@ public class SongViewController {
 		if(b == done) {
 			//When user finished entering in info, create a song and add it to the list
 			
+			
 			//Get info
 			String songName = songText.getText();
 			String artistName = artistText.getText();
@@ -66,6 +71,22 @@ public class SongViewController {
 			String year = yearText.getText();
 			String fileName = "SongList.txt";
 			//Check if song already exists
+			
+			
+			//making song and artist mandatory
+			if (songName.equals("") || artistName.equals("")) {
+				//popup showing error 
+				System.out.println("TESTING addbool1");
+				//Optional <ButtonType> warning = 
+				Alert warning = new Alert(AlertType.ERROR);
+				warning.setTitle("ERROR");
+				warning.setHeaderText("You must enter song name and artist name");
+				warning.showAndWait();
+				
+				b = null;
+				addBool = false;
+				editBool = false;
+			}
 			
 			try {
 				FileReader fr = new FileReader(fileName);
@@ -76,25 +97,33 @@ public class SongViewController {
 				System.out.println("error");
 			}
 			
-			
-			//Writing the song to the text file(in alphabetical order?)
-			try {
-				//FileWriter fw = new FileWriter(fileName,true);
-				FileWriter fw = new FileWriter("SongList.txt",true);
-				BufferedWriter bw = new BufferedWriter(fw);
-				//System.out.println(songName);
-				//bw.write("test");
-				fw.write(songName+"/"+artistName+"/"+albumName+"/"+year+"\r\n");
-				fw.close();
-				bw.close();
-			}catch(FileNotFoundException ex){
-				System.out.println("No file exists");
-			}catch(IOException ex){
-				System.out.println("error");
+			//only add to txt file if it's not empty 
+			if (!songName.equals("") && !artistName.equals("")) {
+				//Writing the song to the text file(in alphabetical order?)
+				try {
+					//FileWriter fw = new FileWriter(fileName,true);
+					FileWriter fw = new FileWriter("SongList.txt",true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					//System.out.println(songName);
+					//bw.write("test");
+					fw.write(songName+"/"+artistName+"/"+albumName+"/"+year+"\r\n");
+					fw.close();
+					bw.close();
+				}catch(FileNotFoundException ex){
+					System.out.println("No file exists");
+				}catch(IOException ex){
+					System.out.println("error");
+				}
 			}
 			
 			
 			if (addBool == true) {
+				//checking to make sure artist and song is entered
+				if (songName.equals("") || artistName.equals("")) {
+					//popup showing error 
+					System.out.println("TESTING addbool");
+					
+				}
 				//Adding the song to the UI
 				GridPane grid = new GridPane();
 				grid.addRow(0, new Label("* Album *"));
@@ -209,7 +238,6 @@ public class SongViewController {
 			albumText.setDisable(true);
 			yearText.setDisable(true);
 		
-			ac.setDisable(false);
 			add.setDisable(false);
 			delete.setDisable(false);
 			edit.setDisable(false);
@@ -222,6 +250,8 @@ public class SongViewController {
 			
 			addBool = false;
 			editBool = false;
+			ac.setDisable(false);
+
 		}
 		
 		
