@@ -76,7 +76,7 @@ public class SongViewController {
 			//making song and artist mandatory
 			if (songName.equals("") || artistName.equals("")) {
 				//popup showing error 
-				System.out.println("TESTING addbool1");
+				//System.out.println("TESTING addbool1");
 				//Optional <ButtonType> warning = 
 				Alert warning = new Alert(AlertType.ERROR);
 				warning.setTitle("ERROR");
@@ -121,7 +121,7 @@ public class SongViewController {
 				//checking to make sure artist and song is entered
 				if (songName.equals("") || artistName.equals("")) {
 					//popup showing error 
-					System.out.println("TESTING addbool");
+					//System.out.println("TESTING addbool");
 					
 				}
 				//Adding the song to the UI
@@ -289,9 +289,13 @@ public class SongViewController {
 			yearText.setDisable(false);
 			
 			
+			
+			
 			//need to set all the text boxes with values of the selected titled pane 
 	        ObservableList<TitledPane> titledPanes = ac.getPanes(); //was .sorted
 	        TitledPane selected = new TitledPane();
+	        
+	        
 	        for (int i = 0; i < titledPanes.size(); i++) {
 	        	if (titledPanes.get(i).isExpanded() == true){
 	        		selected = titledPanes.get(i);
@@ -303,62 +307,92 @@ public class SongViewController {
 	        	}
 	        }
 	        
+	      //initial check to see if something is selected to edit
+	        boolean empty = false;
+			if (selected == null || selected.getText().equals("")) {
+	        	//System.out.println("ITs null");
+	        	Alert warning = new Alert(AlertType.ERROR);
+				warning.setTitle("ERROR");
+				warning.setHeaderText("You must select a song before you edit");
+				warning.showAndWait();
+				empty = true;
+	        }
+			
+			
+	        
+	        
 	        
 	        /*System.out.println("Selected:");
 	        System.out.println(selected);
 	        */
-	       
-	        String txt = selected.getText();
-	        //System.out.println(txt);
-	        //songText.setText(selected.getT);
-	        String txtarr[] = txt.split(":");
-			String arr2[] = txtarr[1].split(" Artist");
-			String songTxt = arr2[0];
-			String artistTxt = txtarr[2];
-	        
-			//System.out.println("songTxt: " + songTxt);
-			//System.out.println("artistTxt: " + artistTxt);
-
-	        GridPane gri = (GridPane) selected.getContent(); //getContent
-	        
-	        /*System.out.println("gri \n" + gri);
-	        System.out.println(gri.getChildren());
-	        */
-	        Node albumNode = null, yearNode = null;
-	        ObservableList<Node> children = gri.getChildren();
-	        for (Node node : children) {
-	        	if (GridPane.getRowIndex(node) == 1) {
-	        		albumNode = node;
-	        	}
-	        	
-	        	if (GridPane.getRowIndex(node) == 3) {
-	        		yearNode = node;
-	        	}
-	        }
-	        
-	        /*System.out.println("albumNode: " + albumNode);
-	        System.out.println("yearNode: " + yearNode);
-	        //System.out.println(gri.getRowI);
-	        */
-	        String albumNodeTxt = albumNode.toString();
-	        String arr [] = albumNodeTxt.split("]'");
-	       // System.out.println(arr[1]);
-	        String albumTxt = arr[1].substring(0, arr[1].length() - 1);
-	        
-	        
-	        String yearNodeTxt = yearNode.toString();
-	        String yearArr[] = yearNodeTxt.split("]'");
-	        String yearTxt = yearArr[1].substring(0, yearArr[1].length() - 1);
-	        //System.out.println("album txt: " + albumTxt);
-	        //System.out.println("year txt: " + yearTxt);
-	        
-	        songText.setText(songTxt);
-			artistText.setText(artistTxt);
-			albumText.setText(albumTxt);
-			yearText.setText(yearTxt);
+	       if (empty == false) {
+		        String txt = selected.getText();
+		        System.out.println("Txt: " + txt);
+		        //songText.setText(selected.getT);
+		        String txtarr[] = txt.split(":");
+				String arr2[] = txtarr[1].split(" Artist");
+				String songTxt = arr2[0];
+				String artistTxt = txtarr[2];
+		        
+				//System.out.println("songTxt: " + songTxt);
+				//System.out.println("artistTxt: " + artistTxt);
+	
+		        GridPane gri = (GridPane) selected.getContent(); //getContent
+		        
+		        /*System.out.println("gri \n" + gri);
+		        System.out.println(gri.getChildren());
+		        */
+		        Node albumNode = null, yearNode = null;
+		        ObservableList<Node> children = gri.getChildren();
+		        for (Node node : children) {
+		        	if (GridPane.getRowIndex(node) == 1) {
+		        		albumNode = node;
+		        	}
+		        	
+		        	if (GridPane.getRowIndex(node) == 3) {
+		        		yearNode = node;
+		        	}
+		        }
+		        
+		        /*System.out.println("albumNode: " + albumNode);
+		        System.out.println("yearNode: " + yearNode);
+		        //System.out.println(gri.getRowI);
+		        */
+		        String albumNodeTxt = albumNode.toString();
+		        String arr [] = albumNodeTxt.split("]'");
+		       // System.out.println(arr[1]);
+		        String albumTxt = arr[1].substring(0, arr[1].length() - 1);
+		        
+		        
+		        String yearNodeTxt = yearNode.toString();
+		        String yearArr[] = yearNodeTxt.split("]'");
+		        String yearTxt = yearArr[1].substring(0, yearArr[1].length() - 1);
+		        //System.out.println("album txt: " + albumTxt);
+		        //System.out.println("year txt: " + yearTxt);
+		        
+		        songText.setText(songTxt);
+				artistText.setText(artistTxt);
+				albumText.setText(albumTxt);
+				yearText.setText(yearTxt);
 			
-			
+	       } else {
+		        songText.setDisable(true);
+				artistText.setDisable(true);
+				albumText.setDisable(true);
+				yearText.setDisable(true);
+				
+				ac.setDisable(false);
+				add.setDisable(false);
+				delete.setDisable(false);
+				edit.setDisable(false);
+				done.setDisable(true);
+				
+				songText.setText("");
+				artistText.setText("");
+				albumText.setText("");
+				yearText.setText("");
 
+	       }
 		}
 		
 		if(b == delete) {
@@ -373,66 +407,77 @@ public class SongViewController {
 		    		break;
 		        }
 		    }
-		    String txt = selected.getText();
-	        String txtarr[] = txt.split(":");
-			String arr2[] = txtarr[1].split(" Artist");
-			String songTxt = arr2[0];
-			String artistTxt = txtarr[2];    
-		   
-
-			
-			//making next song visible on deletion w/ details displayed. if there is no next song, prev song should be displayed w/ details
-			if (titledPanes.size() > 1) {
-				if (index == (titledPanes.size() -1)) {
-					ac.setExpandedPane(titledPanes.get(index-1));
-				} else { //if (index == titledPanes.size()){
-					ac.setExpandedPane(titledPanes.get(index+1));
-				}
-			}
-			
-			
-		    titledPanes.remove(selected);
-		    
-
-		    
-		    GridPane gri = (GridPane) selected.getContent(); //getContent
-	        
-	        Node albumNode = null, yearNode = null;
-	        ObservableList<Node> children = gri.getChildren();
-	        for (Node node : children) {
-	        	if (GridPane.getRowIndex(node) == 1) {
-	        		albumNode = node;
-	        	}
-	        	
-	        	if (GridPane.getRowIndex(node) == 3) {
-	        		yearNode = node;
-	        	}
+		    boolean empty = false;
+			if (selected == null || selected.getText().equals("")) {
+	        	//System.out.println("ITs null");
+	        	Alert warning = new Alert(AlertType.ERROR);
+				warning.setTitle("ERROR");
+				warning.setHeaderText("You must select a song before you delete");
+				warning.showAndWait();
+				empty = true;
 	        }
-	        
-	        String albumNodeTxt = albumNode.toString();
-	        String arr [] = albumNodeTxt.split("]'");
-	       // System.out.println(arr[1]);
-	        String albumTxt = arr[1].substring(0, arr[1].length() - 1);
-	        
-	        String yearNodeTxt = yearNode.toString();
-	        String yearArr[] = yearNodeTxt.split("]'");
-	        String yearTxt = yearArr[1].substring(0, yearArr[1].length() - 1);
-		    
-		    
-			//delete the song from the text file, index is the line number in the text file to delete from
-		    String fileName = "SongList.txt";
-			String lineToRemove = songTxt+"/"+artistTxt+"/"+albumTxt+"/"+yearTxt+"\r\n";
-			File f = new File("SongList.txt");
-			try {
-			BufferedReader br = new BufferedReader(new FileReader(f));
-			removeLine(br,f,lineToRemove );
-			}catch(FileNotFoundException ex){
-				System.out.println("No file exists");
-			}catch(IOException ex){
-				System.out.println("error");
+			
+			if (empty == false) {
+			    String txt = selected.getText();
+		        String txtarr[] = txt.split(":");
+				String arr2[] = txtarr[1].split(" Artist");
+				String songTxt = arr2[0];
+				String artistTxt = txtarr[2];    
+			   
+	
+				
+				//making next song visible on deletion w/ details displayed. if there is no next song, prev song should be displayed w/ details
+				if (titledPanes.size() > 1) {
+					if (index == (titledPanes.size() -1)) {
+						ac.setExpandedPane(titledPanes.get(index-1));
+					} else { //if (index == titledPanes.size()){
+						ac.setExpandedPane(titledPanes.get(index+1));
+					}
+				}
+				
+				
+			    titledPanes.remove(selected);
+			    
+	
+			    
+			    GridPane gri = (GridPane) selected.getContent(); //getContent
+		        
+		        Node albumNode = null, yearNode = null;
+		        ObservableList<Node> children = gri.getChildren();
+		        for (Node node : children) {
+		        	if (GridPane.getRowIndex(node) == 1) {
+		        		albumNode = node;
+		        	}
+		        	
+		        	if (GridPane.getRowIndex(node) == 3) {
+		        		yearNode = node;
+		        	}
+		        }
+		        
+		        String albumNodeTxt = albumNode.toString();
+		        String arr [] = albumNodeTxt.split("]'");
+		       // System.out.println(arr[1]);
+		        String albumTxt = arr[1].substring(0, arr[1].length() - 1);
+		        
+		        String yearNodeTxt = yearNode.toString();
+		        String yearArr[] = yearNodeTxt.split("]'");
+		        String yearTxt = yearArr[1].substring(0, yearArr[1].length() - 1);
+			    
+			    
+				//delete the song from the text file, index is the line number in the text file to delete from
+			    String fileName = "SongList.txt";
+				String lineToRemove = songTxt+"/"+artistTxt+"/"+albumTxt+"/"+yearTxt+"\r\n";
+				File f = new File("SongList.txt");
+				try {
+				BufferedReader br = new BufferedReader(new FileReader(f));
+				removeLine(br,f,lineToRemove );
+				}catch(FileNotFoundException ex){
+					System.out.println("No file exists");
+				}catch(IOException ex){
+					System.out.println("error");
+				}
+			
 			}
-			
-			
 			
 			//have next song selected if it exists, else previous, else nothing
 		}
