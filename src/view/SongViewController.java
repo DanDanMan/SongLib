@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
 
@@ -121,12 +122,68 @@ public class SongViewController {
 				//ac.getPanes().add(tp);
 
 				//LEFT OFF HERE
+				TitledPane removed = null;
 		        for (int i = 0; i < titledPanes.size(); i++) {
 		        	if (titledPanes.get(i).isExpanded() == true){
+		        		removed = ac.getPanes().get(i);
 		        		ac.getPanes().remove(i);
 		        		
 		        	}
 		        }
+		        
+		        //remove
+		        String txt = removed.getText();
+		        //System.out.println(txt);
+		        //songText.setText(selected.getT);
+		        String txtarr[] = txt.split(":");
+				String arr2[] = txtarr[1].split(" Artist");
+				String songTxt = arr2[0];
+				String artistTxt = txtarr[2];
+		        
+				//System.out.println("songTxt: " + songTxt);
+				//System.out.println("artistTxt: " + artistTxt);
+
+		        GridPane gri = (GridPane) removed.getContent(); //getContent
+		        
+		        /*System.out.println("gri \n" + gri);
+		        System.out.println(gri.getChildren());
+		        */
+		        Node albumNode = null, yearNode = null;
+		        ObservableList<Node> children = gri.getChildren();
+		        for (Node node : children) {
+		        	if (GridPane.getRowIndex(node) == 1) {
+		        		albumNode = node;
+		        	}
+		        	
+		        	if (GridPane.getRowIndex(node) == 3) {
+		        		yearNode = node;
+		        	}
+		        }
+		        
+		        /*System.out.println("albumNode: " + albumNode);
+		        System.out.println("yearNode: " + yearNode);
+		        //System.out.println(gri.getRowI);
+		        */
+		        String albumNodeTxt = albumNode.toString();
+		        String arr [] = albumNodeTxt.split("]'");
+		       // System.out.println(arr[1]);
+		        String albumTxt = arr[1].substring(0, arr[1].length() - 1);
+		        
+		        
+		        String yearNodeTxt = yearNode.toString();
+		        String yearArr[] = yearNodeTxt.split("]'");
+		        String yearTxt = yearArr[1].substring(0, yearArr[1].length() - 1);
+		        
+				String lineToRemove = songTxt+"/"+artistTxt+"/"+albumTxt+"/"+yearTxt+"\r\n";
+				File f = new File("SongList.txt");
+				try {
+				BufferedReader br = new BufferedReader(new FileReader(f));
+				removeLine(br,f,lineToRemove );
+				}catch(FileNotFoundException ex){
+					System.out.println("No file exists");
+				}catch(IOException ex){
+					System.out.println("error");
+				}
 		        
 		        if(ac.getPanes().size() == 0) {
 					ac.getPanes().add(tp);
@@ -354,14 +411,14 @@ public class SongViewController {
 				songName1 = arr6[0];
 				artistName1 = arr5[2];
 				
-				if(songName1.compareTo(songName2) > 0) {
+				if(songName1.compareToIgnoreCase(songName2) > 0) {
 					//songName2 comes first
 					System.out.println("insert2");
 					tps.add(i,toAdd);
 					return;
-				}else if(songName1.compareTo(songName2) == 0) {
+				}else if(songName1.compareToIgnoreCase(songName2) == 0) {
 					//same name so compare artists. loop through songs with the same
-					while(i < size && songName1.compareTo(songName2) == 0) {
+					while(i < size && songName1.compareToIgnoreCase(songName2) == 0) {
 						
 						//getting song and artist
 						songArtist1 = tps.get(i).getText();
@@ -371,13 +428,13 @@ public class SongViewController {
 						artistName1 = arr7[2];
 						
 						//if they are not the same song name break out, so song belongs at the end of the list with the same name
-						if(songName1.compareTo(songName2) != 0) {
+						if(songName1.compareToIgnoreCase(songName2) != 0) {
 							break;
 						}
 						//System.out.println(songName1+ songName2 + songName1.compareTo(songName2));
 						
 						//found a spot where new song comes before and old song
-						if(artistName1.compareTo(artistName2) > 0) {
+						if(artistName1.compareToIgnoreCase(artistName2) > 0) {
 							System.out.println("insert3");
 							tps.add(i, toAdd);
 							return;
@@ -409,16 +466,16 @@ public class SongViewController {
 	
 	public void insert(ObservableList<TitledPane> tps, TitledPane toAdd, String sn1, String sn2, String an1, String an2) {
 		System.out.println(sn1 +" "+ sn2 + " " + an1 + " " + an2);
-		if(sn1.compareTo(sn2) < 0) {
+		if(sn1.compareToIgnoreCase(sn2) < 0) {
 			//songName1 comes first
 			tps.add(toAdd);
-		}else if(sn1.compareTo(sn2) > 0) {
+		}else if(sn1.compareToIgnoreCase(sn2) > 0) {
 			//songName 2 comes first
 			tps.add(0,toAdd);
 		}else {
 			//same name so compare artists
 			System.out.println("same artist Name");
-			if(an1.compareTo(an2) < 0) {
+			if(an1.compareToIgnoreCase(an2) < 0) {
 				//artistName1 comes first
 				tps.add(toAdd);
 			}else {
@@ -470,5 +527,55 @@ public class SongViewController {
 		
 	
 	}
+	
+	//preloader. Reads data from SongList.txt line by line, and adds it to accordion using insertSong method
+		@FXML public void initialize() {
+			// TODO Auto-generated method stub
+			File file = new File ("SongList.txt");
+			
+			
+			try {
+				Scanner scn = new Scanner (file);
+				while (scn.hasNextLine()) {
+					String line = scn.nextLine();
+					
+					//delminating it based on /
+					
+					String [] delminated = line.split("/", 4);
+					String song = delminated[0];
+					String artist = delminated[1];
+					String album = delminated[2];
+					String year = delminated[3];
+					
+					/*System.out.println("Song\n" + song);
+					System.out.println("artist\n" + artist);
+					System.out.println("album\n" + album);
+					System.out.println("year\n" + year);
+					*/
+					
+					GridPane grid = new GridPane();
+					grid.addRow(0, new Label("* Album *"));
+					grid.addRow(1, new Label(album));
+					grid.addRow(2, new Label("* Year *"));
+					grid.addRow(3, new Label(year));
+					TitledPane tp = new TitledPane("Song:"+song+" Artist:"+artist, grid);
+					//tp.isExpanded()
+				
+					if(ac.getPanes().size() == 0) {
+						ac.getPanes().add(tp);
+					}else {
+						ObservableList<TitledPane> titledPanes = ac.getPanes();
+						insertSong(titledPanes, tp);
+					}
+					
+					
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println("File not found");
+			}
+			
+		}
 
 }
