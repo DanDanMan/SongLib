@@ -47,6 +47,7 @@ public class SongViewController {
 			artistText.setDisable(false);
 			albumText.setDisable(false);
 			yearText.setDisable(false);
+			done.setDisable(false);
 			addBool = true;
 		}
 		
@@ -213,6 +214,7 @@ public class SongViewController {
 			add.setDisable(false);
 			delete.setDisable(false);
 			edit.setDisable(false);
+			done.setDisable(true);
 			
 			songText.setText("");
 			artistText.setText("");
@@ -234,6 +236,7 @@ public class SongViewController {
 			add.setDisable(false);
 			delete.setDisable(false);
 			edit.setDisable(false);
+			done.setDisable(true);
 			
 			songText.setText("");
 			artistText.setText("");
@@ -250,6 +253,7 @@ public class SongViewController {
 			add.setDisable(true);
 			delete.setDisable(true);
 			edit.setDisable(true);
+			done.setDisable(false);
 			songText.setDisable(false);
 			artistText.setDisable(false);
 			albumText.setDisable(false);

@@ -34,7 +34,7 @@
             <Label layoutX="6.0" layoutY="240.0" text="Artist Name" />
             <Label layoutX="13.0" layoutY="292.0" text="Album" />
             <Label layoutX="16.0" layoutY="343.0" text="Year" />
-            <Button fx:id="done" layoutX="8.0" layoutY="412.0" mnemonicParsing="false" onAction="#buttons" text="Done" />
+            <Button fx:id="done" layoutX="8.0" layoutY="412.0" mnemonicParsing="false" onAction="#buttons" text="Done" disable="true" />
             <Button fx:id="cancel" layoutX="96.0" layoutY="412.0" mnemonicParsing="false" onAction="#buttons" text="Cancel" />
          </children></AnchorPane>
   </items>
