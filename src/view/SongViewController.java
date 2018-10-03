@@ -1,10 +1,19 @@
 package view;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
+
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -50,11 +59,12 @@ public class SongViewController {
 			String artistName = artistText.getText();
 			String albumName = albumText.getText();
 			String year = yearText.getText();
-			String fileName = "songs.txt";
+			String fileName = "SongList.txt";
 			//Check if song already exists
 			
 			try {
 				FileReader fr = new FileReader(fileName);
+				fr.close();
 			}catch(FileNotFoundException ex){
 				System.out.println("No file exists");
 			}catch(IOException ex){
@@ -71,6 +81,7 @@ public class SongViewController {
 				//bw.write("test");
 				fw.write(songName+"/"+artistName+"/"+albumName+"/"+year+"\r\n");
 				fw.close();
+				bw.close();
 			}catch(FileNotFoundException ex){
 				System.out.println("No file exists");
 			}catch(IOException ex){
@@ -113,6 +124,7 @@ public class SongViewController {
 		        for (int i = 0; i < titledPanes.size(); i++) {
 		        	if (titledPanes.get(i).isExpanded() == true){
 		        		ac.getPanes().remove(i);
+		        		
 		        	}
 		        }
 		        
@@ -239,6 +251,69 @@ public class SongViewController {
 
 		}
 		
+		if(b == delete) {
+			//delete the song from the UI
+			ObservableList<TitledPane> titledPanes = ac.getPanes();
+			TitledPane selected = new TitledPane();
+			int index = 0;
+		    for (int i = 0; i < titledPanes.size(); i++) {
+		    	if (titledPanes.get(i).isExpanded() == true){
+		    		selected = titledPanes.get(i);
+		    		index = i;
+		    		break;
+		        }
+		    }
+		    String txt = selected.getText();
+	        String txtarr[] = txt.split(":");
+			String arr2[] = txtarr[1].split(" Artist");
+			String songTxt = arr2[0];
+			String artistTxt = txtarr[2];    
+		   
+		    titledPanes.remove(selected);
+		    
+
+		    
+		    GridPane gri = (GridPane) selected.getContent(); //getContent
+	        
+	        Node albumNode = null, yearNode = null;
+	        ObservableList<Node> children = gri.getChildren();
+	        for (Node node : children) {
+	        	if (GridPane.getRowIndex(node) == 1) {
+	        		albumNode = node;
+	        	}
+	        	
+	        	if (GridPane.getRowIndex(node) == 3) {
+	        		yearNode = node;
+	        	}
+	        }
+	        
+	        String albumNodeTxt = albumNode.toString();
+	        String arr [] = albumNodeTxt.split("]'");
+	       // System.out.println(arr[1]);
+	        String albumTxt = arr[1].substring(0, arr[1].length() - 1);
+	        
+	        String yearNodeTxt = yearNode.toString();
+	        String yearArr[] = yearNodeTxt.split("]'");
+	        String yearTxt = yearArr[1].substring(0, yearArr[1].length() - 1);
+		    
+		    
+			//delete the song from the text file, index is the line number in the text file to delete from
+		    String fileName = "SongList.txt";
+			String lineToRemove = songTxt+"/"+artistTxt+"/"+albumTxt+"/"+yearTxt+"\r\n";
+			File f = new File("SongList.txt");
+			try {
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			removeLine(br,f,lineToRemove );
+			}catch(FileNotFoundException ex){
+				System.out.println("No file exists");
+			}catch(IOException ex){
+				System.out.println("error");
+			}
+			
+			
+			
+			//have next song selected if it exists, else previous, else nothing
+		}
 		
 	}
 	
@@ -354,6 +429,46 @@ public class SongViewController {
 		}
 	}
 	
+	public static void removeLine(BufferedReader br,File f, String Line) throws FileNotFoundException, UnsupportedEncodingException {
+		System.out.println("removing line:" + Line.trim());
+		try {
+		  File tempFile = new File(f.getAbsolutePath() + "2.txt");
+			
+	      BufferedReader br2 = new BufferedReader(new FileReader(f));
+	      PrintWriter pw = new PrintWriter(new FileWriter(tempFile,true));
+
+	      String line = null;
+	      
+	      while ((line = br.readLine()) != null) {
+
+	          if (!line.trim().equals(Line.trim())) {
+	        	System.out.println("dne");
+	            pw.println(line);
+	            pw.flush();
+	          }
+	        }
+	        pw.close();
+	        br.close();
+	        br2.close();
+	        //Delete the original file
+	        if (!f.delete()) {
+	          System.out.println("Could not delete file");
+	          return;
+	        }
+
+	        //Rename the new file to the filename the original file had.
+	        if (!tempFile.renameTo(f)) {
+	          System.out.println("Could not rename file");
+
+	      }
+
+		}catch(FileNotFoundException ex2){
+			System.out.println("No file exists");
+		}catch(IOException ex){
+			System.out.println("error");
+		}
+		
 	
+	}
 
 }
