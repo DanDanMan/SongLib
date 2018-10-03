@@ -1,5 +1,7 @@
 package view;
 
+//Daniel Varma dv262	
+//Adit Patel aip38
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -55,11 +57,6 @@ public class SongViewController {
 			addBool = true;
 		}
 		
-		
-		//Need to increase the max songs we can add
-		//Do we want to store the songs in the text file in alphabetical order
-		//How do we keep the session of the songs already added(user turns off then turns back on the program)
-		//What data structure should we use to store Songs
 		if(b == done) {
 			//When user finished entering in info, create a song and add it to the list
 			boolean duplicate = false;
@@ -108,7 +105,7 @@ public class SongViewController {
 				}
 			}
 			
-			
+			//Add the edited song to the UI if its not a duplicate
 			if (editBool == true && !duplicate) {
 				
 				ObservableList<TitledPane> titledPanes = ac.getPanes();
@@ -198,7 +195,7 @@ public class SongViewController {
 			
 			
 			
-			//only add to txt file if it's not empty 
+			//if the edited or added song is not a duplicate then write it to the textfile
 			if(!duplicate) {
 				if (!songName.equals("") && !artistName.equals("")) {
 					//Writing the song to the text file(in alphabetical order?)
@@ -219,13 +216,10 @@ public class SongViewController {
 				}
 			}
 			
+			
+			//Add the song to the UI
 			if (addBool == true && !duplicate) {
-				//checking to make sure artist and song is entered
-				if (songName.equals("") || artistName.equals("")) {
-					//popup showing error 
-					//System.out.println("TESTING addbool");
-					
-				}
+				
 				//Adding the song to the UI
 				GridPane grid = new GridPane();
 				grid.addRow(0, new Label("* Album *"));
@@ -233,7 +227,7 @@ public class SongViewController {
 				grid.addRow(2, new Label("* Year *"));
 				grid.addRow(3, new Label(year));
 				TitledPane tp = new TitledPane("Song:"+songName+" Artist:"+artistName, grid);
-				//tp.isExpanded()
+				
 			
 				if(ac.getPanes().size() == 0) {
 					ac.getPanes().add(tp);
@@ -245,10 +239,6 @@ public class SongViewController {
 
 			}
 			
-			
-	        
-	       
-	        
 	        //reset fields
 	        songText.setDisable(true);
 			artistText.setDisable(true);
@@ -312,18 +302,14 @@ public class SongViewController {
 	        ObservableList<TitledPane> titledPanes = ac.getPanes(); //was .sorted
 	        TitledPane selected = new TitledPane();
 	        
-	        
+	        //get the pane user clicked on
 	        for (int i = 0; i < titledPanes.size(); i++) {
 	        	if (titledPanes.get(i).isExpanded() == true){
 	        		selected = titledPanes.get(i);
 	        	}
 	        	
-	        	//set it if rest of titledpanes isn't expanded, they cant be expanded 
-	        	if (titledPanes.get(i).isExpanded() == false) {
-	        		//titledPanes.get(i).setCollapsible(false);
-	        	}
-	        }
 	        
+	        }
 	      //initial check to see if something is selected to edit
 	        boolean empty = false;
 			if (selected == null || selected.getText().equals("")) {
@@ -336,29 +322,17 @@ public class SongViewController {
 	        }
 			
 			
-	        
-	        
-	        
-	        /*System.out.println("Selected:");
-	        System.out.println(selected);
-	        */
 	       if (empty == false) {
 		        String txt = selected.getText();
 		        System.out.println("Txt: " + txt);
-		        //songText.setText(selected.getT);
 		        String txtarr[] = txt.split(":");
 				String arr2[] = txtarr[1].split(" Artist");
 				String songTxt = arr2[0];
 				String artistTxt = txtarr[2];
-		        
-				//System.out.println("songTxt: " + songTxt);
-				//System.out.println("artistTxt: " + artistTxt);
 	
 		        GridPane gri = (GridPane) selected.getContent(); //getContent
 		        
-		        /*System.out.println("gri \n" + gri);
-		        System.out.println(gri.getChildren());
-		        */
+		        
 		        Node albumNode = null, yearNode = null;
 		        ObservableList<Node> children = gri.getChildren();
 		        for (Node node : children) {
@@ -371,21 +345,16 @@ public class SongViewController {
 		        	}
 		        }
 		        
-		        /*System.out.println("albumNode: " + albumNode);
-		        System.out.println("yearNode: " + yearNode);
-		        //System.out.println(gri.getRowI);
-		        */
+		  
 		        String albumNodeTxt = albumNode.toString();
 		        String arr [] = albumNodeTxt.split("]'");
-		       // System.out.println(arr[1]);
 		        String albumTxt = arr[1].substring(0, arr[1].length() - 1);
 		        
 		        
 		        String yearNodeTxt = yearNode.toString();
 		        String yearArr[] = yearNodeTxt.split("]'");
 		        String yearTxt = yearArr[1].substring(0, yearArr[1].length() - 1);
-		        //System.out.println("album txt: " + albumTxt);
-		        //System.out.println("year txt: " + yearTxt);
+		       
 		        
 		        songText.setText(songTxt);
 				artistText.setText(artistTxt);
@@ -426,7 +395,6 @@ public class SongViewController {
 		    }
 		    boolean empty = false;
 			if (selected == null || selected.getText().equals("")) {
-	        	//System.out.println("ITs null");
 	        	Alert warning = new Alert(AlertType.ERROR);
 				warning.setTitle("ERROR");
 				warning.setHeaderText("You must select a song before you delete");
@@ -496,7 +464,7 @@ public class SongViewController {
 			
 			}
 			
-			//have next song selected if it exists, else previous, else nothing
+		
 		}
 		
 	}
@@ -526,7 +494,7 @@ public class SongViewController {
 		songName1 = arr2[0];
 		artistName1 = arr[2];
 		
-		System.out.println("insert1");
+		
 		insert(tps, toAdd, songName1, songName2, artistName1, artistName2);
 		
 		}else {
@@ -540,7 +508,6 @@ public class SongViewController {
 				
 				if(songName1.compareToIgnoreCase(songName2) > 0) {
 					//songName2 comes first
-					System.out.println("insert2");
 					tps.add(i,toAdd);
 					return;
 				}else if(songName1.compareToIgnoreCase(songName2) == 0) {
@@ -582,7 +549,6 @@ public class SongViewController {
 					return;
 				}
 				
-				//if you get to this point then the song has not been added
 				
 			}
 			tps.add(toAdd);
@@ -592,7 +558,6 @@ public class SongViewController {
 	}
 	
 	public void insert(ObservableList<TitledPane> tps, TitledPane toAdd, String sn1, String sn2, String an1, String an2) {
-		System.out.println(sn1 +" "+ sn2 + " " + an1 + " " + an2);
 		if(sn1.compareToIgnoreCase(sn2) < 0) {
 			//songName1 comes first
 			tps.add(toAdd);
@@ -601,7 +566,6 @@ public class SongViewController {
 			tps.add(0,toAdd);
 		}else {
 			//same name so compare artists
-			System.out.println("same artist Name");
 			if(an1.compareToIgnoreCase(an2) < 0) {
 				//artistName1 comes first
 				tps.add(toAdd);
@@ -614,7 +578,6 @@ public class SongViewController {
 	}
 	
 	public static void removeLine(BufferedReader br,File f, String Line) throws FileNotFoundException, UnsupportedEncodingException {
-		System.out.println("removing line:" + Line.trim());
 		try {
 		  File tempFile = new File(f.getAbsolutePath() + "2.txt");
 			
@@ -626,7 +589,6 @@ public class SongViewController {
 	      while ((line = br.readLine()) != null) {
 
 	          if (!line.trim().equals(Line.trim())) {
-	        	System.out.println("dne");
 	            pw.println(line);
 	            pw.flush();
 	          }

@@ -1,5 +1,9 @@
 package application;
 
+//Daniel Varma dv262
+//Adit Patel aip38
+
+
 public class Song {
 	
 	private String name, artist, album, year;
