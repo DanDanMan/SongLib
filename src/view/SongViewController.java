@@ -379,6 +379,18 @@ public class SongViewController {
 			String songTxt = arr2[0];
 			String artistTxt = txtarr[2];    
 		   
+
+			
+			//making next song visible on deletion w/ details displayed. if there is no next song, prev song should be displayed w/ details
+			if (titledPanes.size() > 1) {
+				if (index == (titledPanes.size() -1)) {
+					ac.setExpandedPane(titledPanes.get(index-1));
+				} else { //if (index == titledPanes.size()){
+					ac.setExpandedPane(titledPanes.get(index+1));
+				}
+			}
+			
+			
 		    titledPanes.remove(selected);
 		    
 
