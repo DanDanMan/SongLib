@@ -97,52 +97,6 @@ public class SongViewController {
 				System.out.println("error");
 			}
 			
-			//only add to txt file if it's not empty 
-			if (!songName.equals("") && !artistName.equals("")) {
-				//Writing the song to the text file(in alphabetical order?)
-				try {
-					//FileWriter fw = new FileWriter(fileName,true);
-					FileWriter fw = new FileWriter("SongList.txt",true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					//System.out.println(songName);
-					//bw.write("test");
-					fw.write(songName+"/"+artistName+"/"+albumName+"/"+year+"\r\n");
-					fw.close();
-					bw.close();
-				}catch(FileNotFoundException ex){
-					System.out.println("No file exists");
-				}catch(IOException ex){
-					System.out.println("error");
-				}
-			}
-			
-			
-			if (addBool == true) {
-				//checking to make sure artist and song is entered
-				if (songName.equals("") || artistName.equals("")) {
-					//popup showing error 
-					//System.out.println("TESTING addbool");
-					
-				}
-				//Adding the song to the UI
-				GridPane grid = new GridPane();
-				grid.addRow(0, new Label("* Album *"));
-				grid.addRow(1, new Label(albumName));
-				grid.addRow(2, new Label("* Year *"));
-				grid.addRow(3, new Label(year));
-				TitledPane tp = new TitledPane("Song:"+songName+" Artist:"+artistName, grid);
-				//tp.isExpanded()
-			
-				if(ac.getPanes().size() == 0) {
-					ac.getPanes().add(tp);
-				}else {
-					ObservableList<TitledPane> titledPanes = ac.getPanes();
-					insertSong(titledPanes, tp);
-				}
-				ac.setExpandedPane(tp);
-
-			}
-			
 			if (editBool == true) {
 				
 				ObservableList<TitledPane> titledPanes = ac.getPanes();
@@ -229,6 +183,56 @@ public class SongViewController {
 		        
 		        ac.setExpandedPane(tp);
 			}
+			
+			
+			
+			//only add to txt file if it's not empty 
+			if (!songName.equals("") && !artistName.equals("")) {
+				//Writing the song to the text file(in alphabetical order?)
+				try {
+					//FileWriter fw = new FileWriter(fileName,true);
+					FileWriter fw = new FileWriter("SongList.txt",true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					//System.out.println(songName);
+					//bw.write("test");
+					fw.write(songName+"/"+artistName+"/"+albumName+"/"+year+"\r\n");
+					fw.close();
+					bw.close();
+				}catch(FileNotFoundException ex){
+					System.out.println("No file exists");
+				}catch(IOException ex){
+					System.out.println("error");
+				}
+			}
+			
+			
+			if (addBool == true) {
+				//checking to make sure artist and song is entered
+				if (songName.equals("") || artistName.equals("")) {
+					//popup showing error 
+					//System.out.println("TESTING addbool");
+					
+				}
+				//Adding the song to the UI
+				GridPane grid = new GridPane();
+				grid.addRow(0, new Label("* Album *"));
+				grid.addRow(1, new Label(albumName));
+				grid.addRow(2, new Label("* Year *"));
+				grid.addRow(3, new Label(year));
+				TitledPane tp = new TitledPane("Song:"+songName+" Artist:"+artistName, grid);
+				//tp.isExpanded()
+			
+				if(ac.getPanes().size() == 0) {
+					ac.getPanes().add(tp);
+				}else {
+					ObservableList<TitledPane> titledPanes = ac.getPanes();
+					insertSong(titledPanes, tp);
+				}
+				ac.setExpandedPane(tp);
+
+			}
+			
+			
 	        
 	       
 	        
