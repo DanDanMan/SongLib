@@ -110,6 +110,8 @@ public class SongViewController {
 					ObservableList<TitledPane> titledPanes = ac.getPanes();
 					insertSong(titledPanes, tp);
 				}
+				ac.setExpandedPane(tp);
+
 			}
 			
 			if (editBool == true) {
@@ -196,10 +198,7 @@ public class SongViewController {
 					insertSong(titledPanes, tp);
 				}
 		        
-				//tp.isExpanded()
-			
-			//
-		        
+		        ac.setExpandedPane(tp);
 			}
 	        
 	       
@@ -589,6 +588,10 @@ public class SongViewController {
 					}
 					
 					
+				}
+				//wow
+				if(ac.getPanes().size() > 0) {
+					ac.setExpandedPane(ac.getPanes().get(0));
 				}
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
