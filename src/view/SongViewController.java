@@ -62,7 +62,7 @@ public class SongViewController {
 		//What data structure should we use to store Songs
 		if(b == done) {
 			//When user finished entering in info, create a song and add it to the list
-			
+			boolean duplicate = false;
 			
 			//Get info
 			String songName = songText.getText();
@@ -88,16 +88,28 @@ public class SongViewController {
 				editBool = false;
 			}
 			
-			try {
-				FileReader fr = new FileReader(fileName);
-				fr.close();
-			}catch(FileNotFoundException ex){
-				System.out.println("No file exists");
-			}catch(IOException ex){
-				System.out.println("error");
+			//check if name artist exists already
+			for(int i = 0; i < ac.getPanes().size(); i++) {
+				String temp = ac.getPanes().get(i).getText();
+				String temp2 = "Song:"+songName+" Artist:"+artistName;
+				System.out.println(temp+" "+temp2);
+				if(temp.compareTo(temp2) == 0) {
+					Alert warning = new Alert(AlertType.ERROR);
+					warning.setTitle("ERROR");
+					warning.setHeaderText("Can't process request:Duplicate song");
+					warning.showAndWait();
+					
+					duplicate = true;
+					b = null;
+					addBool = false;
+					editBool = false;
+					break;
+					
+				}
 			}
 			
-			if (editBool == true) {
+			
+			if (editBool == true && !duplicate) {
 				
 				ObservableList<TitledPane> titledPanes = ac.getPanes();
 		        TitledPane selected = new TitledPane();
@@ -187,26 +199,27 @@ public class SongViewController {
 			
 			
 			//only add to txt file if it's not empty 
-			if (!songName.equals("") && !artistName.equals("")) {
-				//Writing the song to the text file(in alphabetical order?)
-				try {
-					//FileWriter fw = new FileWriter(fileName,true);
-					FileWriter fw = new FileWriter("SongList.txt",true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					//System.out.println(songName);
-					//bw.write("test");
-					fw.write(songName+"/"+artistName+"/"+albumName+"/"+year+"\r\n");
-					fw.close();
-					bw.close();
-				}catch(FileNotFoundException ex){
-					System.out.println("No file exists");
-				}catch(IOException ex){
-					System.out.println("error");
+			if(!duplicate) {
+				if (!songName.equals("") && !artistName.equals("")) {
+					//Writing the song to the text file(in alphabetical order?)
+					try {
+						//FileWriter fw = new FileWriter(fileName,true);
+						FileWriter fw = new FileWriter("SongList.txt",true);
+						BufferedWriter bw = new BufferedWriter(fw);
+						//System.out.println(songName);
+						//bw.write("test");
+						fw.write(songName+"/"+artistName+"/"+albumName+"/"+year+"\r\n");
+						fw.close();
+						bw.close();
+					}catch(FileNotFoundException ex){
+						System.out.println("No file exists");
+					}catch(IOException ex){
+						System.out.println("error");
+					}
 				}
 			}
 			
-			
-			if (addBool == true) {
+			if (addBool == true && !duplicate) {
 				//checking to make sure artist and song is entered
 				if (songName.equals("") || artistName.equals("")) {
 					//popup showing error 
